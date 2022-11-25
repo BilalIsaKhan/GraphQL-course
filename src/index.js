@@ -1,5 +1,4 @@
-import myLocation, { getGreeting, message, name } from "./mymodule";
+import myAddFunction, { subtractFunction } from "./math";
 
-console.log(message, name);
-console.log(myLocation);
-console.log(getGreeting("Bilal"));
+console.log(myAddFunction(23, 34));
+console.log(subtractFunction(34, 23));
