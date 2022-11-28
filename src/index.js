@@ -3,31 +3,27 @@ import { GraphQLServer } from "graphql-yoga";
 //Type definitions (schema)
 const typeDefs = `
     type Query {
-        title: String!
-        price: Float!
-        releaseYear: Int
-        rating: Float
-        inStock: Boolean!
+      post: Post!
     }
+    type Post {
+      id: String!
+      title: String!
+      body: String!
+      published: Boolean!
+    }
+
 `;
 
 //Resolvers
 const resolvers = {
   Query: {
-    title() {
-      return "Knorr Noodles";
-    },
-    price() {
-      return 3.29;
-    },
-    releaseYear() {
-      return 2005;
-    },
-    rating() {
-      return null;
-    },
-    inStock() {
-      return false;
+    post() {
+      return {
+        id: "12345",
+        title: "Monday sucks",
+        body: "Monday generally sucks, doesnt have anything to do with this",
+        published: false,
+      };
     },
   },
 };
