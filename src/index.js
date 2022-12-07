@@ -22,21 +22,21 @@ const users = [
 //Demo Posts data
 const posts = [
   {
-    id: "1",
+    id: "10",
     title: "This is a post 1",
     body: "This is a body 1",
     published: true,
     author: "1",
   },
   {
-    id: "2",
+    id: "11",
     title: "This is a post 2",
     body: "This is a body 2",
     published: false,
     author: "1",
   },
   {
-    id: "3",
+    id: "12",
     title: "This is a post 3",
     body: "This is a body 3",
     published: true,
@@ -49,21 +49,25 @@ const comments = [
     id: "100",
     text: "I can have my own comments",
     author: "1",
+    post: "10",
   },
   {
     id: "200",
     text: "I am entitled to my own opinions",
     author: "2",
+    post: "10",
   },
   {
     id: "300",
     text: "I can have as many opinions as I want",
     author: "3",
+    post: "11",
   },
   {
     id: "400",
     text: "This is the 4th comment",
     author: "2",
+    post: "11",
   },
 ];
 
@@ -90,11 +94,13 @@ const typeDefs = `
       body: String!
       published: Boolean!
       author: User!
+      comments: [Comment!]!
     }
     type Comment {
       id: ID!
       text: String!
       author: User!
+      post: Post!
     }
 
 `;
@@ -143,6 +149,11 @@ const resolvers = {
         return user.id === parent.author;
       });
     },
+    comments(parent, args, ctx, info) {
+      return comments.filter((comment) => {
+        return comment.post === parent.id;
+      });
+    },
   },
   User: {
     posts(parent, args, ctx, info) {
@@ -162,6 +173,11 @@ const resolvers = {
     author(parent, args, ctx, info) {
       return users.find((user) => {
         return user.id === parent.author;
+      });
+    },
+    post(parent, args, ctx, info) {
+      return posts.find((post) => {
+        return post.id === parent.post;
       });
     },
   },
