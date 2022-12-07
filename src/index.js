@@ -26,18 +26,21 @@ const posts = [
     title: "This is a post 1",
     body: "This is a body 1",
     published: true,
+    author: "1",
   },
   {
     id: "2",
     title: "This is a post 2",
     body: "This is a body 2",
     published: false,
+    author: "1",
   },
   {
     id: "3",
     title: "This is a post 3",
     body: "This is a body 3",
     published: true,
+    author: "2",
   },
 ];
 
@@ -60,6 +63,7 @@ const typeDefs = `
       title: String!
       body: String!
       published: Boolean!
+      author: User!
     }
 
 `;
@@ -97,6 +101,13 @@ const resolvers = {
         body: "Monday generally sucks, doesnt have anything to do with this",
         published: false,
       };
+    },
+  },
+  Post: {
+    author(parent, args, ctx, info) {
+      return users.find((user) => {
+        return user.id === parent.author;
+      });
     },
   },
 };
