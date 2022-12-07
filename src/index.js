@@ -48,18 +48,22 @@ const comments = [
   {
     id: "100",
     text: "I can have my own comments",
+    author: "1",
   },
   {
     id: "200",
     text: "I am entitled to my own opinions",
+    author: "2",
   },
   {
     id: "300",
     text: "I can have as many opinions as I want",
+    author: "3",
   },
   {
     id: "400",
     text: "This is the 4th comment",
+    author: "2",
   },
 ];
 
@@ -78,6 +82,7 @@ const typeDefs = `
       email: String!
       age: Int
       posts: [Post!]!
+      comments: [Comment!]!
     }
     type Post {
       id: ID!
@@ -89,6 +94,7 @@ const typeDefs = `
     type Comment {
       id: ID!
       text: String!
+      author: User!
     }
 
 `;
@@ -142,6 +148,20 @@ const resolvers = {
     posts(parent, args, ctx, info) {
       return posts.filter((post) => {
         return post.author === parent.id;
+      });
+    },
+  },
+  User: {
+    comments(parent, args, ctx, info) {
+      return comments.filter((comment) => {
+        return comment.author === parent.id;
+      });
+    },
+  },
+  Comment: {
+    author(parent, args, ctx, info) {
+      return users.find((user) => {
+        return user.id === parent.author;
       });
     },
   },
