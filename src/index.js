@@ -43,12 +43,32 @@ const posts = [
     author: "2",
   },
 ];
+//Demo Comments data
+const comments = [
+  {
+    id: "100",
+    text: "I can have my own comments",
+  },
+  {
+    id: "200",
+    text: "I am entitled to my own opinions",
+  },
+  {
+    id: "300",
+    text: "I can have as many opinions as I want",
+  },
+  {
+    id: "400",
+    text: "This is the 4th comment",
+  },
+];
 
 //Type definitions (schema)
 const typeDefs = `
     type Query {
       users(query: String): [User!]!
       posts(query: String): [Post!]!
+      comments: [Comment!]!
       me: User!
       post: Post!
     }
@@ -57,6 +77,7 @@ const typeDefs = `
       name: String!
       email: String!
       age: Int
+      posts: [Post!]!
     }
     type Post {
       id: ID!
@@ -65,12 +86,19 @@ const typeDefs = `
       published: Boolean!
       author: User!
     }
+    type Comment {
+      id: ID!
+      text: String!
+    }
 
 `;
 
 //Resolvers
 const resolvers = {
   Query: {
+    comments() {
+      return comments;
+    },
     posts(parent, args, ctx, info) {
       if (!args.query) {
         return posts;
@@ -107,6 +135,13 @@ const resolvers = {
     author(parent, args, ctx, info) {
       return users.find((user) => {
         return user.id === parent.author;
+      });
+    },
+  },
+  User: {
+    posts(parent, args, ctx, info) {
+      return posts.filter((post) => {
+        return post.author === parent.id;
       });
     },
   },
